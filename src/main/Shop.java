@@ -1,5 +1,5 @@
 package main;
-
+//o
 import model.Product;
 import model.Sale;
 import model.Amount;
@@ -216,7 +216,7 @@ public class Shop {
 	 */
 	private void readInventory() {
 		// locate file, path and name
-		File f = new File(System.getProperty("user.dir") + File.separator + "files" + File.separator + ITEMS_FILE);
+		File f = new File(System.getProperty("user.dir") + File.separator + "src\\model\\files" + File.separator + ITEMS_FILE);
 		
 		try {			
 			// wrap in proper classes
