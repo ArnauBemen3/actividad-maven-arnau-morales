@@ -34,75 +34,53 @@ public class Shop {
 		inventory = new ArrayList<Product>();
 		sales = new ArrayList<Sale>();
 	}
-	
-	
 
 	public Amount getCash() {
 		return cash;
 	}
 
-
-
 	public void setCash(Amount cash) {
 		this.cash = cash;
 	}
-
-
 
 	public ArrayList<Product> getInventory() {
 		return inventory;
 	}
 
-
-
 	public void setInventory(ArrayList<Product> inventory) {
 		this.inventory = inventory;
 	}
-
-
 
 	public int getNumberProducts() {
 		return numberProducts;
 	}
 
-
-
 	public void setNumberProducts(int numberProducts) {
 		this.numberProducts = numberProducts;
 	}
-
-
 
 	public ArrayList<Sale> getSales() {
 		return sales;
 	}
 
-
-
 	public void setSales(ArrayList<Sale> sales) {
 		this.sales = sales;
 	}
-
-
 
 	public int getNumberSales() {
 		return numberSales;
 	}
 
-
-
 	public void setNumberSales(int numberSales) {
 		this.numberSales = numberSales;
 	}
-
-
 
 	public static void main(String[] args) {
 		Shop shop = new Shop();
 
 		// load inventory from external data
 		shop.loadInventory();
-		
+
 		// init session as employee
 		shop.initSession();
 
@@ -182,18 +160,18 @@ public class Shop {
 
 	private void initSession() {
 		// TODO Auto-generated method stub
-		
+
 		Employee employee = new Employee("test");
-		boolean logged=false;
-		
+		boolean logged = false;
+
 		do {
 			Scanner scanner = CONSOLE;
 			System.out.println("Introduïu número d'empleat: ");
 			int employeeId = scanner.nextInt();
-			
+
 			System.out.println("Introduïu contrasenya: ");
 			String password = scanner.next();
-			
+
 			logged = employee.login(employeeId, password);
 			if (logged) {
 				System.out.println("Login correcte ");
@@ -201,7 +179,7 @@ public class Shop {
 				System.out.println("Usuari o contrasenya incorrectes ");
 			}
 		} while (!logged);
-				
+
 	}
 
 	/**
@@ -222,22 +200,23 @@ public class Shop {
 	private void readInventory() {
 		File f = new File(System.getProperty("user.dir") + File.separator + "files" + File.separator + ITEMS_FILE);
 
-		// TODO RA1-ISSUE-03: obrir el fitxer, llegir-lo linia a linia i afegir cada producte a inventory.
-		try {
-			BufferedReader bf = new BufferedReader(new FileReader(f));
+		// TODO RA1-ISSUE-03: obrir el fitxer, llegir-lo linia a linia i afegir cada
+		// producte a inventory.
+		try (BufferedReader bf = new BufferedReader(new FileReader(f))) {
 			String Linea = "";
-			while(Linea = bf.readLine() != null)
-			{
-				
+			while ((Linea = bf.readLine()) != null) {
+				//Crida ISSUE-04
 			}
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-		
-		
+
 		// TODO RA1-ISSUE-04: delegar la conversio de cada linia a parseProductLine.
-		// TODO RA1-ISSUE-11: tractar fitxer absent o error de lectura amb un missatge comprensible.
+		// TODO RA1-ISSUE-11: tractar fitxer absent o error de lectura amb un missatge
+		// comprensible.
 		System.out.println("RA1-ISSUE-03 pendent: encara no s'ha carregat " + f.getPath());
 	}
 
@@ -245,7 +224,8 @@ public class Shop {
 	 * Convert a valid line from items.txt into a Product.
 	 */
 	private Product parseProductLine(String line) {
-		// TODO RA1-ISSUE-04: validar camps, convertir preu i estoc, i retornar un Product.
+		// TODO RA1-ISSUE-04: validar camps, convertir preu i estoc, i retornar un
+		// Product.
 		// TODO RA1-ISSUE-05: decidir com es tracten les linies mal formades.
 		return null;
 	}
@@ -254,7 +234,8 @@ public class Shop {
 	 * Save the current inventory to items.txt.
 	 */
 	public void saveInventory() {
-		// TODO RA1-ISSUE-09: convertir cada Product en una linia i reescriure items.txt.
+		// TODO RA1-ISSUE-09: convertir cada Product en una linia i reescriure
+		// items.txt.
 		System.out.println("RA1-ISSUE-09 pendent: encara no s'ha desat l'inventari.");
 	}
 
@@ -269,7 +250,8 @@ public class Shop {
 	 * add a new product to inventory getting data from console
 	 */
 	public void addProduct() {
-		// TODO RA1-ISSUE-06: demanar dades minimes, crear un Product i afegir-lo a inventory.
+		// TODO RA1-ISSUE-06: demanar dades minimes, crear un Product i afegir-lo a
+		// inventory.
 		System.out.println("RA1-ISSUE-06 pendent: encara no es poden afegir articles.");
 	}
 
@@ -365,10 +347,11 @@ public class Shop {
 		totalAmount.setValue(totalAmount.getValue() * TAX_RATE);
 		// show cost total
 		System.out.println("Venda realitzada correctament, total: " + totalAmount);
-		
+
 		// make payment
-		if(!client.pay(totalAmount)) {
-			System.out.println("El client deu: " + client.getBalance());;
+		if (!client.pay(totalAmount)) {
+			System.out.println("El client deu: " + client.getBalance());
+			;
 		}
 
 		// create sale
@@ -392,15 +375,15 @@ public class Shop {
 				System.out.println(sale);
 			}
 		}
-		
+
 		// ask for client name
 		Scanner sc = CONSOLE;
 		System.out.println("Exportar fitxer de vendes? S / N");
 		String option = sc.nextLine();
 		if ("S".equalsIgnoreCase(option)) {
 			this.writeSales();
-		} 
-		
+		}
+
 	}
 
 	/**
@@ -410,49 +393,51 @@ public class Shop {
 		// define file name based on date
 		LocalDate myObj = LocalDate.now();
 		String fileName = "sales_" + myObj.toString() + ".txt";
-		
+
 		// locate file, path and name
 		File f = new File(System.getProperty("user.dir") + File.separator + "files" + File.separator + fileName);
-				
+
 		try {
 			// wrap in proper classes
 			FileWriter fw;
 			fw = new FileWriter(f, true);
 			PrintWriter pw = new PrintWriter(fw);
-			
+
 			// write line by line
-			int counterSale=1;
-			for (Sale sale : sales) {				
+			int counterSale = 1;
+			for (Sale sale : sales) {
 				// format first line TO BE -> 1;Client=PERE;Date=29-02-2024 12:49:50;
-				StringBuilder firstLine = new StringBuilder(counterSale+";Client="+sale.getClient()+";Date=" + sale.formatDate()+";");
+				StringBuilder firstLine = new StringBuilder(
+						counterSale + ";Client=" + sale.getClient() + ";Date=" + sale.formatDate() + ";");
 				pw.write(firstLine.toString());
 				fw.write("\n");
-				
-				// format second line TO BE -> 1;Products=Manzana,20.0€;Fresa,10.0€;Hamburguesa,60.0€;
+
+				// format second line TO BE ->
+				// 1;Products=Manzana,20.0€;Fresa,10.0€;Hamburguesa,60.0€;
 				// build products line
-				StringBuilder productLine= new StringBuilder();
+				StringBuilder productLine = new StringBuilder();
 				for (Product product : sale.getProducts()) {
-					productLine.append(product.getName()+ "," + product.getPublicPrice()+";");
+					productLine.append(product.getName() + "," + product.getPublicPrice() + ";");
 				}
-				StringBuilder secondLine = new StringBuilder(counterSale+ ";" + "Products=" + productLine +";");						                                                
-				pw.write(secondLine.toString());	
+				StringBuilder secondLine = new StringBuilder(counterSale + ";" + "Products=" + productLine + ";");
+				pw.write(secondLine.toString());
 				fw.write("\n");
-				
+
 				// format third line TO BE -> 1;Amount=93.60€;
-				StringBuilder thirdLine = new StringBuilder(counterSale+ ";" + "Amount=" + sale.getAmount() +";");						                                                
-				pw.write(thirdLine.toString());	
+				StringBuilder thirdLine = new StringBuilder(counterSale + ";" + "Amount=" + sale.getAmount() + ";");
+				pw.write(thirdLine.toString());
 				fw.write("\n");
-				
+
 				// increment counter sales
 				counterSale++;
 			}
 			// close files
 			pw.close();
 			fw.close();
-			
+
 		} catch (IOException e) {
 			e.printStackTrace();
-		}		
+		}
 	}
 
 	/**
@@ -482,8 +467,6 @@ public class Shop {
 		inventory.add(product);
 		numberProducts++;
 	}
-	
-	
 
 	/**
 	 * check if inventory is full or not
