@@ -205,7 +205,11 @@ public class Shop {
 		try (BufferedReader bf = new BufferedReader(new FileReader(f))) {
 			String Linea = "";
 			while ((Linea = bf.readLine()) != null) {
-				//Crida ISSUE-04
+				Product producte = parseProductLine(Linea);
+				
+				if (producte  != null) {
+					addProduct(producte);
+				}
 			}
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -226,6 +230,16 @@ public class Shop {
 	private Product parseProductLine(String line) {
 		// TODO RA1-ISSUE-04: validar camps, convertir preu i estoc, i retornar un
 		// Product.
+		String[] camps = line.split(";");
+	    String nom = camps[0].split(":")[1];
+
+	    try {
+	        double preu = Double.parseDouble(camps[1].split(":")[1]);
+	        int stock = Integer.parseInt(camps[2].split(":")[1]);
+
+	        return new Product(nom, new Amount(preu), true, stock);
+
+	    } catch (NumberFormatException e) {
 		// TODO RA1-ISSUE-05: decidir com es tracten les linies mal formades.
 		return null;
 	}
