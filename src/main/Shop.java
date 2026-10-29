@@ -179,7 +179,6 @@ public class Shop {
 				System.out.println("Usuari o contrasenya incorrectes ");
 			}
 		} while (!logged);
-
 	}
 
 	/**
@@ -198,14 +197,18 @@ public class Shop {
 	 * read inventory from file
 	 */
 	private void readInventory() {
-		File f = new File(System.getProperty("user.dir") + File.separator + "files" + File.separator + ITEMS_FILE);
+		File f = new File(System.getProperty("user.dir") + File.separator + "src" + File.separator + "model"+ File.separator + "files" + File.separator + ITEMS_FILE);
 
 		// TODO RA1-ISSUE-03: obrir el fitxer, llegir-lo linia a linia i afegir cada
 		// producte a inventory.
 		try (BufferedReader bf = new BufferedReader(new FileReader(f))) {
 			String Linea = "";
+			int numLine = 0;
 			while ((Linea = bf.readLine()) != null) {
-				Product producte = parseProductLine(Linea);
+				
+				numLine++;
+				
+				Product producte = parseProductLine(Linea, numLine);
 				
 				if (producte  != null) {
 					addProduct(producte);
@@ -227,13 +230,14 @@ public class Shop {
 	/**
 	 * Convert a valid line from items.txt into a Product.
 	 */
-	private Product parseProductLine(String line) {
+	
+	private Product parseProductLine(String line, int numLine) {
 		// TODO RA1-ISSUE-04: validar camps, convertir preu i estoc, i retornar un
 		// Product.
-		String[] camps = line.split(";");
-	    String nom = camps[0].split(":")[1];
+		try {
+			String[] camps = line.split(";");
+			String nom = camps[0].split(":")[1];
 
-	    try {
 	        double preu = Double.parseDouble(camps[1].split(":")[1]);
 	        int stock = Integer.parseInt(camps[2].split(":")[1]);
 
@@ -241,7 +245,12 @@ public class Shop {
 
 	    } catch (NumberFormatException e) {
 		// TODO RA1-ISSUE-05: decidir com es tracten les linies mal formades.
-		return null;
+	    	System.out.println("Error: En la linea nº" + numLine + " el preu o l'estoc no tenen un valor correcte");
+	    	return null;
+	    } catch (ArrayIndexOutOfBoundsException e) {
+	        System.out.println("Error: En la linea nº" + numLine + " un dels camps del producte està incomplet");
+	        return null;
+	    }
 	}
 
 	/**
