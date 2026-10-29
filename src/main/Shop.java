@@ -275,7 +275,30 @@ public class Shop {
 	public void addProduct() {
 		// TODO RA1-ISSUE-06: demanar dades minimes, crear un Product i afegir-lo a
 		// inventory.
-		System.out.println("RA1-ISSUE-06 pendent: encara no es poden afegir articles.");
+		/*System.out.println("RA1-ISSUE-06 pendent: encara no es poden afegir articles.");*/
+		try {
+			System.out.print("Poducte: ");
+			String nom = CONSOLE.next();
+		
+			System.out.print("Preu: ");
+			String preuText = CONSOLE.next();
+			
+			System.out.print("Quantitat: ");
+	        String quantiatText = CONSOLE.next();
+	        
+	        double preu = Double.parseDouble(preuText);
+	        int stock = Integer.parseInt(quantiatText);
+		
+			if(!nom.isEmpty() && preu > 0 && stock >= 0) {
+				Product producte = new Product(nom, new Amount(preu), true, stock);
+				addProduct(producte);
+				System.out.println("Article afegit correctament");
+			}else {
+				System.out.println("Error: Les dades afegides no son correctes");
+			}
+		} catch (NumberFormatException  e) {
+			System.out.println("Error: Les dades de preu i quantitat han de ser numèrics");
+		}
 	}
 
 	/**
